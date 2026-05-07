@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EQX Styleguide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="eqx.css">
+  <link rel="stylesheet" href="sg.css">
+</head>
+<body>
+
+<!-- ═══ ANNOUNCEMENT BAR ════════════════════════════════════════════════ -->
+<div class="announcement-bar">
+  <div class="announcement-bar__track">
+    <span class="announcement-bar__item">EQX Styleguide</span>
+    <span class="announcement-bar__item">Design System</span>
+    <span class="announcement-bar__item">EQX Styleguide</span>
+    <span class="announcement-bar__item">Design System</span>
+    <span class="announcement-bar__item">EQX Styleguide</span>
+    <span class="announcement-bar__item">Design System</span>
+    <span class="announcement-bar__item">EQX Styleguide</span>
+    <span class="announcement-bar__item">Design System</span>
+  </div>
+</div>
+
+<!-- ═══ NAVIGATION ══════════════════════════════════════════════════════ -->
+<nav class="site-nav" id="siteNav" aria-label="Page navigation">
+  <button class="nav-hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Open navigation" aria-expanded="false" aria-controls="mobileMenu">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div class="nav-logo">
+    <img src="assets/graphics/EQX_Logo_RGB.svg" alt="EQX" id="navLogo">
+  </div>
+</nav>
+
+<!-- ═══ MOBILE MENU ══════════════════════════════════════════════════════ -->
+<div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Main navigation">
+
+  <div>
+    <span class="mobile-menu__group-label">Foundation</span>
+    <a href="#logo"    onclick="closeMenu()">00 — Logo</a>
+    <a href="#typo"    onclick="closeMenu()">01 — Typography</a>
+    <a href="#colors"  onclick="closeMenu()">02 — Colours</a>
+    <a href="#borders" onclick="closeMenu()" class="--indent --soon">03 — Lines &amp; Borders</a>
+    <a href="#spacing" onclick="closeMenu()" class="--indent --soon">04 — Spacing</a>
+    <a href="#columns" onclick="closeMenu()" class="--indent --soon">05 — Column Grid</a>
+  </div>
+
+  <div>
+    <span class="mobile-menu__group-label">Atoms &amp; Base</span>
+    <a href="#" class="--soon">06 — Buttons</a>
+    <a href="#" class="--soon">07 — Badges &amp; Labels</a>
+    <a href="#" class="--soon">08 — Forms</a>
+    <a href="#" class="--soon">09 — Icons</a>
+  </div>
+
+</div>
+
+<!-- ═══ MAIN CONTENT ════════════════════════════════════════════════════ -->
+<main>
+<div class="page">
+
+  <!-- Header -->
+  <header class="header">
+    <h1>Styleguide</h1>
+    <p>EQX Design System — Farben, Typografie und Komponenten für eine konsistente Markenkommunikation.</p>
+  </header>
+
+
+  <!-- ═══ 00 — LOGO ════════════════════════════════════════════════════ -->
+  <section class="sg-section" id="logo">
+    <h2 class="section-label">00 — Logo</h2>
+
+    <div class="demo-label">Standard — on light background</div>
+    <div class="sg-demo-pad">
+      <div class="sg-logo-row">
+        <div class="sg-logo-variant">
+          <span class="sg-logo-variant__label">Full logo</span>
+          <img src="assets/graphics/EQX_Logo_RGB.svg" alt="EQX" class="sg-logo-demo">
+        </div>
+      </div>
+    </div>
+
+    <div class="demo-label">On neon green</div>
+    <div class="sg-demo-pad --neon">
+      <img src="assets/graphics/EQX_Logo_RGB.svg" alt="EQX" class="sg-logo-demo">
+    </div>
+
+    <div class="demo-label">On dark background — Inverse (noch nicht verfügbar)</div>
+    <div class="sg-demo-pad --dark">
+      <p class="text--xs" style="color:var(--fg-muted);">Inverse-Version (weißes E/Q) wird ergänzt.</p>
+    </div>
+
+    <table class="spec-table">
+      <tr><th>Aufbau</th><td>E + Q in <code>--green</code> (#006838) · X in <code>--green-neon</code> (#00ff43)</td></tr>
+      <tr><th>Minimum width</th><td>80px</td></tr>
+      <tr><th>Regeln</th><td>Farben nie einzeln verändern · nicht auf dunklem Hintergrund ohne Inverse-Version verwenden</td></tr>
+      <tr><th>Downloads</th><td>
+        <span class="text--muted text--xs">Google Drive-Link wird ergänzt, sobald verfügbar</span>
+      </td></tr>
+    </table>
+  </section>
+
+
+  <!-- ═══ 01 — TYPOGRAPHY ══════════════════════════════════════════════ -->
+  <section class="sg-section" id="typo">
+    <h2 class="section-label">01 — Typography</h2>
+
+    <h3 class="sg-h3">Headings</h3>
+    <table class="spec-table spec-table--type">
+      <tr>
+        <th><code>h1</code><br><code>--text-xl</code><br><span class="text--muted">clamp(30–54px) · Bold · lh 1.1</span></th>
+        <td><h1>Lorem ipsum dolor sit amet</h1></td>
+      </tr>
+      <tr>
+        <th><code>h2</code><br><code>--text-l</code><br><span class="text--muted">clamp(22–32px) · Bold · lh 1.2</span></th>
+        <td><h2>Consectetur adipiscing elit</h2></td>
+      </tr>
+      <tr>
+        <th><code>h3</code><br><code>--text-m</code><br><span class="text--muted">clamp(18–22px) · Bold · lh 1.4</span></th>
+        <td><h3>Sed do eiusmod tempor incididunt</h3></td>
+      </tr>
+      <tr>
+        <th><code>h4</code><br><code>--text-base</code><br><span class="text--muted">clamp(15–16px) · Bold · lh 1.4</span></th>
+        <td><h4>Ut labore et dolore magna aliqua</h4></td>
+      </tr>
+      <tr>
+        <th><code>h5</code><br><code>--text-sm</code><br><span class="text--muted">14px · Bold · Uppercase</span></th>
+        <td><h5>Ut enim ad minim</h5></td>
+      </tr>
+      <tr>
+        <th><code>h6</code><br><code>--text-xs</code><br><span class="text--muted">12px · Bold · Uppercase</span></th>
+        <td><h6>Quis nostrud exercitation</h6></td>
+      </tr>
+    </table>
+
+    <h3 class="sg-h3 --top">Body Text &amp; Variants</h3>
+    <table class="spec-table spec-table--type">
+      <tr>
+        <th><code>body</code><br><code>--text-base</code><br><span class="text--muted">Regular · lh 1.6</span></th>
+        <td><p>EQX steht für hochwertige Produkte mit klarer Markenhaltung. Dieser Fließtext zeigt die Basis-Typografie in Standardgröße mit komfortablem Zeilenabstand.</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--muted</code><br><span class="text--muted">Secondary</span></th>
+        <td><p class="text--muted">Ergänzende Informationen, Metadaten und sekundäre Texte in der gedämpften Textfarbe.</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--sm</code><br><span class="text--muted">14px</span></th>
+        <td><p class="text--sm">Kleiner Text für Labels, Hinweise und Fußnoten.</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--xs</code><br><span class="text--muted">12px</span></th>
+        <td><p class="text--xs">Bildunterschriften und kompakte Metadaten.</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--upper</code><br><span class="text--muted">Uppercase</span></th>
+        <td><p class="text--xs text--upper">Kategorie-Label · Abschnittstitel</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--green</code><br><span class="text--muted">Brand colour</span></th>
+        <td><p class="text--green">EQX — Design mit Haltung</p></td>
+      </tr>
+      <tr>
+        <th><code>.text--mono</code><br><span class="text--muted">Code</span></th>
+        <td><p class="text--mono text--sm">--green: #006838;</p></td>
+      </tr>
+    </table>
+
+    <h3 class="sg-h3 --top">Font Weights</h3>
+    <table class="spec-table">
+      <tr><th><code>--fw-regular</code></th><td style="font-weight:400; font-size:var(--text-m);">Lorem ipsum dolor — Regular 400</td></tr>
+      <tr><th><code>--fw-bold</code></th><td style="font-weight:700; font-size:var(--text-m);">Lorem ipsum dolor — Bold 700</td></tr>
+    </table>
+
+    <h3 class="sg-h3 --top">Font Downloads</h3>
+    <table class="spec-table">
+      <tr>
+        <th>Plus Jakarta Sans</th>
+        <td>
+          <a href="https://fonts.google.com/specimen/Plus+Jakarta+Sans" target="_blank" rel="noopener" class="sg-logo-download">
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M8 1v9M8 10l-3-3M8 10l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+            Google Fonts
+          </a>
+          &nbsp;
+          <span class="text--xs text--muted">Weights used: 400 Regular · 700 Bold</span>
+        </td>
+      </tr>
+      <tr>
+        <th>embed code</th>
+        <td><code class="text--xs">@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;700&display=swap');</code></td>
+      </tr>
+    </table>
+  </section>
+
+
+  <!-- ═══ 02 — COLOURS ═════════════════════════════════════════════════ -->
+  <section class="sg-section" id="colors">
+    <h2 class="section-label">02 — Colours</h2>
+
+    <h3 class="sg-h3">Brand Colours</h3>
+    <div class="sg-color-grid">
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#006838"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Brand Green</span>
+          <span class="sg-color-card__token">--green</span>
+        </div>
+        <div class="sg-color-card__meta">#006838 · R0 G104 B56</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#004d28"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Brand Green Hover</span>
+          <span class="sg-color-card__token">--green-hover</span>
+        </div>
+        <div class="sg-color-card__meta">#004d28 · Interaction state</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#00ff43; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Neon Green</span>
+          <span class="sg-color-card__token">--green-neon</span>
+        </div>
+        <div class="sg-color-card__meta">#00ff43 · R0 G255 B68</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#e6fff0; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Accent Light</span>
+          <span class="sg-color-card__token">--green-light</span>
+        </div>
+        <div class="sg-color-card__meta">#e6fff0 · Hintergrund-Tönung</div>
+      </div>
+    </div>
+
+    <h3 class="sg-h3 --top">Text Colours</h3>
+    <div class="sg-color-grid">
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#1a1a1a"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Foreground</span>
+          <span class="sg-color-card__token">--fg</span>
+        </div>
+        <div class="sg-color-card__meta">#1a1a1a · Primärer Text</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#666666"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Foreground Muted</span>
+          <span class="sg-color-card__token">--fg-muted</span>
+        </div>
+        <div class="sg-color-card__meta">#666666 · Sekundärer Text</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#ffffff; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Inverse</span>
+          <span class="sg-color-card__token">--fg-inverse</span>
+        </div>
+        <div class="sg-color-card__meta">#ffffff · Text auf Dunkel</div>
+      </div>
+    </div>
+
+    <h3 class="sg-h3 --top">Background &amp; Structural Colours</h3>
+    <div class="sg-color-grid">
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#ffffff; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Background</span>
+          <span class="sg-color-card__token">--bg</span>
+        </div>
+        <div class="sg-color-card__meta">#ffffff</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#f5f5f5; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Background Subtle</span>
+          <span class="sg-color-card__token">--bg-subtle</span>
+        </div>
+        <div class="sg-color-card__meta">#f5f5f5 · Boxen, Platzhalter</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#cccccc"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Border</span>
+          <span class="sg-color-card__token">--border</span>
+        </div>
+        <div class="sg-color-card__meta">#cccccc · Strukturlinien</div>
+      </div>
+      <div class="sg-color-card">
+        <div class="sg-color-card__swatch" style="background:#e5e5e5; border-bottom:1px solid #e0e0e0;"></div>
+        <div class="sg-color-card__info">
+          <span class="sg-color-card__name">Border Light</span>
+          <span class="sg-color-card__token">--border-light</span>
+        </div>
+        <div class="sg-color-card__meta">#e5e5e5 · Dekorative Trennlinien</div>
+      </div>
+    </div>
+
+    <h3 class="sg-h3 --top">Colour Usage</h3>
+    <div class="demo-label">Dark green on white</div>
+    <div class="sg-demo-pad" style="background:#ffffff;">
+      <p style="color:#006838; font-weight:700; font-size:var(--text-l);">EQX — Design mit Haltung</p>
+    </div>
+
+    <div class="demo-label">White on dark green</div>
+    <div class="sg-demo-pad --green">
+      <p style="color:#ffffff; font-weight:700; font-size:var(--text-l);">EQX — Design mit Haltung</p>
+    </div>
+
+    <div class="demo-label">Dark on neon green</div>
+    <div class="sg-demo-pad --neon">
+      <p style="color:#1a1a1a; font-weight:700; font-size:var(--text-l);">EQX — Design mit Haltung</p>
+    </div>
+
+  </section>
+
+
+</div><!-- /.page -->
+</main>
+
+<script>
+  function toggleMenu() {
+    const nav  = document.getElementById('siteNav');
+    const menu = document.getElementById('mobileMenu');
+    const btn  = document.getElementById('hamburger');
+    menu.style.top = nav.getBoundingClientRect().bottom + 'px';
+    const open = menu.classList.toggle('--open');
+    btn.classList.toggle('--open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    document.body.style.overflow = open ? 'hidden' : '';
+  }
+
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('--open');
+    document.getElementById('hamburger').classList.remove('--open');
+    document.getElementById('hamburger').setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') closeMenu();
+  });
+</script>
+
+</body>
+</html>
