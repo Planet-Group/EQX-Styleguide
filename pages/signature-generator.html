@@ -132,31 +132,32 @@
     }
 
     /* ── Form ────────────────────────────────────────────────────────────── */
-    .form-group { margin-bottom: 1rem; }
-    .form-group label {
+    .form-field { margin-bottom: 1.25rem; }
+    .form-field label {
       display: block;
-      font-size: 0.8125rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      color: var(--fg);
-      margin-bottom: 0.3rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 0.35rem;
+      transition: color var(--dur);
     }
-    .form-group input {
+    .form-field:focus-within label { color: var(--green); }
+    .form-field input {
       width: 100%;
-      padding: 0.55rem 0.75rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      padding: 0.5rem 0;
+      border: none;
+      border-bottom: 2px solid var(--border);
+      border-radius: 0;
       font-family: var(--font);
-      font-size: 0.9rem;
+      font-size: 0.9375rem;
       color: var(--fg);
-      background: var(--bg);
+      background: transparent;
       outline: none;
-      transition: border-color var(--dur), box-shadow var(--dur);
+      transition: border-color var(--dur);
     }
-    .form-group input:focus {
-      border-color: var(--green);
-      box-shadow: 0 0 0 3px rgba(0, 104, 56, 0.12);
-    }
-    .form-group input::placeholder { color: var(--fg-muted); opacity: 0.6; }
+    .form-field input:focus { border-bottom-color: var(--green); }
 
     .divider {
       border: none;
@@ -203,7 +204,7 @@
       letter-spacing: 0.04em;
       text-transform: uppercase;
       border: none;
-      border-radius: var(--radius);
+      border-radius: 0;
       cursor: pointer;
       transition: background var(--dur), transform var(--dur);
     }
@@ -305,39 +306,39 @@
       <div class="col-label">Deine Angaben</div>
 
       <form id="sig-form">
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-name">Name</label>
-          <input id="f-name" type="text" value="Max Mustermann" placeholder="z. B. Max Mustermann">
+          <input id="f-name" type="text" value="Max Mustermann" placeholder="Max Mustermann">
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-position">Position</label>
-          <input id="f-position" type="text" value="Marketing Manager" placeholder="z. B. Marketing Manager">
+          <input id="f-position" type="text" value="Marketing Manager" placeholder="Marketing Manager">
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-email">E-Mail</label>
           <input id="f-email" type="email" value="info@eqx.vet" placeholder="name@eqx.vet">
         </div>
-        <div class="form-group">
-          <label for="f-phone">Telefon <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
+        <div class="form-field">
+          <label for="f-phone">Telefon <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
           <input id="f-phone" type="tel" value="+49 831 123456" placeholder="+49 831 123456">
         </div>
-        <div class="form-group">
-          <label for="f-quote">Persönliche Worte <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
+        <div class="form-field">
+          <label for="f-quote">Persönliche Worte <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
           <input id="f-quote" type="text" value="Vertrauen ist das beste Bauchgefühl" placeholder="z. B. Where focus goes, energy flows">
         </div>
 
         <hr class="divider">
         <p class="section-heading">Unternehmen</p>
 
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-company">Firma</label>
           <input id="f-company" type="text" value="EQX Healthcare AG" placeholder="EQX Healthcare AG">
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-street">Straße &amp; Hausnummer</label>
           <input id="f-street" type="text" value="Grabenstrasse 15a" placeholder="Grabenstrasse 15a">
         </div>
-        <div class="form-group">
+        <div class="form-field">
           <label for="f-city">PLZ &amp; Ort</label>
           <input id="f-city" type="text" value="CH-6340 Baar" placeholder="CH-6340 Baar">
         </div>
