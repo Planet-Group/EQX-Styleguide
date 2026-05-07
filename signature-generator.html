@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EQX — E-Mail-Signatur Generator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── Tokens ──────────────────────────────────────────────────────────── */
+    :root {
+      --green:        #006838;
+      --green-hover:  #004d28;
+      --green-neon:   #00ff43;
+      --green-light:  #e6fff0;
+      --fg:           #1a1a1a;
+      --fg-muted:     #666666;
+      --fg-inverse:   #ffffff;
+      --bg:           #ffffff;
+      --bg-subtle:    #f5f5f5;
+      --border:       #cccccc;
+      --border-light: #e5e5e5;
+      --font: "Plus Jakarta Sans", "Helvetica Neue", Arial, sans-serif;
+      --radius: 4px;
+      --dur: 180ms;
+    }
+
+    /* ── Reset ───────────────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: var(--font);
+      font-size: 0.9375rem;
+      line-height: 1.6;
+      color: var(--fg);
+      background: var(--bg-subtle);
+      -webkit-font-smoothing: antialiased;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: var(--green); }
+
+    /* ── Announcement Bar ────────────────────────────────────────────────── */
+    .bar {
+      background: var(--green-neon);
+      height: 2.5rem;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+    }
+    .bar__track {
+      display: flex;
+      white-space: nowrap;
+      animation: marquee 16s linear infinite;
+    }
+    .bar__item {
+      display: inline-flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg);
+      padding: 0 2.5rem;
+    }
+    .bar__item::after {
+      content: "";
+      display: inline-block;
+      width: 3px; height: 3px;
+      background: var(--green);
+      border-radius: 50%;
+      margin-left: 1.5rem;
+    }
+    @keyframes marquee {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── Nav ─────────────────────────────────────────────────────────────── */
+    .nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      height: 4rem;
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav img { height: 2rem; width: auto; }
+
+    /* ── Page ────────────────────────────────────────────────────────────── */
+    .page {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem;
+    }
+
+    .page-header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 4px solid var(--fg);
+    }
+    .page-header h1 { font-size: clamp(1.875rem, 1rem + 3vw, 3rem); line-height: 1.1; letter-spacing: -0.02em; }
+    .page-header p  { margin-top: 0.5rem; color: var(--fg-muted); font-size: 1.1rem; }
+
+    /* ── Layout ──────────────────────────────────────────────────────────── */
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .layout { grid-template-columns: 1fr; gap: 2rem; }
+    }
+
+    /* ── Column headings ─────────────────────────────────────────────────── */
+    .col-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.25rem;
+    }
+
+    /* ── Form ────────────────────────────────────────────────────────────── */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label {
+      display: block;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--fg);
+      margin-bottom: 0.3rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.55rem 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-family: var(--font);
+      font-size: 0.9rem;
+      color: var(--fg);
+      background: var(--bg);
+      outline: none;
+      transition: border-color var(--dur), box-shadow var(--dur);
+    }
+    .form-group input:focus {
+      border-color: var(--green);
+      box-shadow: 0 0 0 3px rgba(0, 104, 56, 0.12);
+    }
+    .form-group input::placeholder { color: var(--fg-muted); opacity: 0.6; }
+
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border-light);
+      margin: 1.5rem 0 1.25rem;
+    }
+    .section-heading {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 1rem;
+    }
+
+    /* ── Preview ─────────────────────────────────────────────────────────── */
+    .preview-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      min-height: 220px;
+    }
+    #signature-preview,
+    #signature-preview * { font-family: Arial, Helvetica, sans-serif !important; }
+    #signature-preview p  { margin: 0; padding: 0; }
+    #signature-preview table { border-collapse: collapse; }
+    #signature-preview td { padding: 0; margin: 0; line-height: 1.3; }
+
+    /* ── Copy Button ─────────────────────────────────────────────────────── */
+    .btn-copy {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 1rem;
+      padding: 0.75rem 1.25rem;
+      background: var(--green);
+      color: var(--fg-inverse);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: none;
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background var(--dur), transform var(--dur);
+    }
+    .btn-copy:hover  { background: var(--green-hover); }
+    .btn-copy:active { transform: scale(0.98); }
+    .btn-copy.--copied { background: #1a7a40; }
+
+    .copy-feedback {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-top: 0.5rem;
+      height: 1.2rem;
+      opacity: 0;
+      transition: opacity 300ms;
+    }
+    .copy-feedback.--visible { opacity: 1; }
+
+    /* ── Instructions ────────────────────────────────────────────────────── */
+    .instructions { margin-top: 2.5rem; }
+    .instructions h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 0.6rem;
+      margin-bottom: 1.5rem;
+    }
+    .instr-group { margin-bottom: 1.75rem; }
+    .instr-group h3 {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+    .instr-group ol {
+      padding-left: 1.25rem;
+      font-size: 0.875rem;
+      color: var(--fg-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+    }
+    .instr-group ol strong { color: var(--fg); }
+    .instr-group ol a { color: var(--green); }
+    .instr-group p {
+      font-size: 0.875rem;
+      color: var(--fg-muted);
+    }
+    .instr-group p strong { color: var(--fg); }
+
+    /* ── Hidden copy target ──────────────────────────────────────────────── */
+    #sig-copy-target {
+      position: absolute;
+      left: -9999px;
+      opacity: 0;
+      background-color: #ffffff;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- Announcement Bar -->
+<div class="bar">
+  <div class="bar__track">
+    <span class="bar__item">EQX</span>
+    <span class="bar__item">E-Mail-Signatur Generator</span>
+    <span class="bar__item">EQX</span>
+    <span class="bar__item">E-Mail-Signatur Generator</span>
+    <span class="bar__item">EQX</span>
+    <span class="bar__item">E-Mail-Signatur Generator</span>
+    <span class="bar__item">EQX</span>
+    <span class="bar__item">E-Mail-Signatur Generator</span>
+  </div>
+</div>
+
+<!-- Nav -->
+<nav class="nav">
+  <img src="https://cdn.shopify.com/s/files/1/0795/9091/6441/files/EQX_Logo_green.png?v=1709463036" alt="EQX">
+</nav>
+
+<!-- Page -->
+<main class="page">
+
+  <header class="page-header">
+    <h1>E-Mail-Signatur</h1>
+    <p>Daten eingeben, Vorschau prüfen, kopieren — fertig.</p>
+  </header>
+
+  <div class="layout">
+
+    <!-- ── Formular ──────────────────────────────────────────────────────── -->
+    <div>
+      <div class="col-label">Deine Angaben</div>
+
+      <form id="sig-form">
+        <div class="form-group">
+          <label for="f-name">Name</label>
+          <input id="f-name" type="text" value="Max Mustermann" placeholder="z. B. Max Mustermann">
+        </div>
+        <div class="form-group">
+          <label for="f-position">Position</label>
+          <input id="f-position" type="text" value="Marketing Manager" placeholder="z. B. Marketing Manager">
+        </div>
+        <div class="form-group">
+          <label for="f-email">E-Mail</label>
+          <input id="f-email" type="email" value="info@eqx.vet" placeholder="name@eqx.vet">
+        </div>
+        <div class="form-group">
+          <label for="f-phone">Telefon <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
+          <input id="f-phone" type="tel" value="+49 831 123456" placeholder="+49 831 123456">
+        </div>
+        <div class="form-group">
+          <label for="f-quote">Zitat <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
+          <input id="f-quote" type="text" value="Vertrauen ist das beste Bauchgefühl" placeholder="z. B. Where focus goes, energy flows">
+        </div>
+
+        <hr class="divider">
+        <p class="section-heading">Unternehmen</p>
+
+        <div class="form-group">
+          <label for="f-company">Firma</label>
+          <input id="f-company" type="text" value="EQX Healthcare AG" placeholder="EQX Healthcare AG">
+        </div>
+        <div class="form-group">
+          <label for="f-street">Straße &amp; Hausnummer</label>
+          <input id="f-street" type="text" value="Grabenstrasse 15a" placeholder="Grabenstrasse 15a">
+        </div>
+        <div class="form-group">
+          <label for="f-city">PLZ &amp; Ort</label>
+          <input id="f-city" type="text" value="CH-6340 Baar" placeholder="CH-6340 Baar">
+        </div>
+      </form>
+    </div>
+
+    <!-- ── Vorschau ───────────────────────────────────────────────────────── -->
+    <div>
+      <div class="col-label">Vorschau</div>
+
+      <div class="preview-box">
+        <div id="signature-preview"></div>
+      </div>
+
+      <button class="btn-copy" id="copy-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="5.5" y="5.5" width="9" height="9" rx="1" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M3.5 10.5H2.5A1 1 0 0 1 1.5 9.5v-7a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Signatur kopieren
+      </button>
+      <p class="copy-feedback" id="copy-feedback">Signatur kopiert!</p>
+
+      <!-- Anleitung -->
+      <div class="instructions">
+        <h2>Einrichtung</h2>
+
+        <div class="instr-group">
+          <h3>Gmail (Browser)</h3>
+          <ol>
+            <li>Auf <strong>„Signatur kopieren"</strong> klicken.</li>
+            <li><a href="https://mail.google.com/mail/u/0/#settings/general" target="_blank" rel="noopener">Gmail</a> öffnen → Einstellungen (Zahnrad → „Alle Einstellungen anzeigen").</li>
+            <li>Tab <strong>„Allgemein"</strong> → Abschnitt <strong>„Signatur"</strong> → <strong>„Neu erstellen"</strong>.</li>
+            <li>Namen vergeben → in das Textfeld einfügen (<strong>Cmd+V / Strg+V</strong>).</li>
+            <li>Unter <strong>„Standardwerte"</strong> die neue Signatur für neue E-Mails und Antworten auswählen.</li>
+            <li>Ganz unten auf <strong>„Änderungen speichern"</strong> klicken.</li>
+          </ol>
+        </div>
+
+        <div class="instr-group">
+          <h3>Outlook (Desktop)</h3>
+          <ol>
+            <li>Auf <strong>„Signatur kopieren"</strong> klicken.</li>
+            <li>Neue E-Mail erstellen → im Menüband auf <strong>„Signatur" → „Signaturen..."</strong> klicken.</li>
+            <li><strong>„Neu"</strong> → Namen vergeben → in das Textfeld einfügen (<strong>Strg+V</strong>).</li>
+            <li>Rechts unter <strong>„Standardsignatur"</strong> für neue und weitergeleitete Mails auswählen.</li>
+            <li><strong>„OK"</strong> klicken.</li>
+          </ol>
+        </div>
+
+        <div class="instr-group">
+          <h3>Apple Mail (macOS)</h3>
+          <ol>
+            <li>Auf <strong>„Signatur kopieren"</strong> klicken.</li>
+            <li>Mail-App → Menü <strong>„Mail" → „Einstellungen..."</strong> → Tab <strong>„Signaturen"</strong>.</li>
+            <li>E-Mail-Konto auswählen → <strong>+</strong> → Signatur einfügen (<strong>Cmd+V</strong>).</li>
+            <li><strong>Wichtig:</strong> Haken bei <strong>„Immer meine Standardschrift verwenden"</strong> entfernen.</li>
+            <li>Signaturnamen per Drag &amp; Drop auf das E-Mail-Konto (linke Spalte) ziehen.</li>
+          </ol>
+        </div>
+
+        <div class="instr-group">
+          <h3>Hinweis: Mobile Apps</h3>
+          <p>Die <strong>Gmail-App</strong> auf iOS/Android unterstützt keine HTML-Signaturen. Die Signatur funktioniert zuverlässig im Browser und in Desktop-Clients. Die mobile Signatur muss separat in den App-Einstellungen eingerichtet werden.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- Unsichtbarer Container für den Kopiervorgang -->
+<div id="sig-copy-target"></div>
+
+<script>
+  (function () {
+
+    var LOGO_URL = "https://cdn.shopify.com/s/files/1/0795/9091/6441/files/EQX_Logo_green.png?v=1709463036";
+    var LOGO_WIDTH = 120; /* px — passend zur SVG-Proportion 212:85 */
+
+    var fields = {
+      name:     document.getElementById("f-name"),
+      position: document.getElementById("f-position"),
+      email:    document.getElementById("f-email"),
+      phone:    document.getElementById("f-phone"),
+      quote:    document.getElementById("f-quote"),
+      company:  document.getElementById("f-company"),
+      street:   document.getElementById("f-street"),
+      city:     document.getElementById("f-city"),
+    };
+
+    var preview    = document.getElementById("signature-preview");
+    var copyTarget = document.getElementById("sig-copy-target");
+    var copyBtn    = document.getElementById("copy-btn");
+    var feedback   = document.getElementById("copy-feedback");
+
+    /* ── Signatur-HTML generieren ─────────────────────────────────────── */
+    function buildSignature(d) {
+      var sp  = 'style="margin:0;padding:0;line-height:1.35;"';
+      var gap = 'style="margin:0;padding:0;font-size:6px;line-height:6px;mso-line-height-rule:exactly;"';
+      var big = 'style="margin:0;padding:0;font-size:20px;line-height:20px;mso-line-height-rule:exactly;"';
+
+      var quoteRow = d.quote
+        ? '<tr><td ' + sp + '>'
+          + '<em><font face="Arial" color="#666666">»' + d.quote + '«</font></em>'
+          + '</td></tr>'
+          + '<tr><td ' + gap + '>&nbsp;</td></tr>'
+        : "";
+
+      var phoneRow = d.phone
+        ? '<tr><td ' + sp + '>'
+          + '<a href="tel:' + d.phone.replace(/\s/g, "") + '" style="color:#666666;text-decoration:none;">'
+          + '<font face="Arial" color="#666666">' + d.phone + '</font></a>'
+          + '</td></tr>'
+        : "";
+
+      return (
+        '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:480px;background-color:#ffffff;">'
+        + '<tbody>'
+
+        /* Trennstrich */
+        + '<tr><td ' + sp + '>'
+        + '<font face="Arial" color="#006838" style="font-size:18px;">—</font>'
+        + '</td></tr>'
+        + '<tr><td ' + gap + '>&nbsp;</td></tr>'
+
+        /* Zitat (optional) */
+        + quoteRow
+
+        /* Name */
+        + '<tr><td ' + sp + '>'
+        + '<strong><font face="Arial" color="#006838">' + d.name + '</font></strong>'
+        + '</td></tr>'
+
+        /* Position */
+        + '<tr><td ' + sp + '>'
+        + '<font face="Arial" color="#666666">' + d.position + '</font>'
+        + '</td></tr>'
+        + '<tr><td ' + gap + '>&nbsp;</td></tr>'
+
+        /* E-Mail */
+        + '<tr><td ' + sp + '>'
+        + '<a href="mailto:' + d.email + '" style="color:#666666;text-decoration:none;">'
+        + '<font face="Arial" color="#666666">' + d.email + '</font></a>'
+        + '</td></tr>'
+
+        /* Telefon (optional) */
+        + phoneRow
+        + '<tr><td ' + gap + '>&nbsp;</td></tr>'
+
+        /* Firma */
+        + '<tr><td ' + sp + '>'
+        + '<strong><font face="Arial" color="#1a1a1a">' + d.company + '</font></strong>'
+        + '</td></tr>'
+
+        /* Adresse */
+        + '<tr><td ' + sp + '>'
+        + '<font face="Arial" color="#666666">' + d.street + '</font>'
+        + '</td></tr>'
+        + '<tr><td ' + sp + '>'
+        + '<font face="Arial" color="#666666">' + d.city + '</font>'
+        + '</td></tr>'
+
+        /* Logo */
+        + '<tr><td ' + big + '>&nbsp;</td></tr>'
+        + '<tr><td style="margin:0;padding:0;line-height:1;">'
+        + '<img src="' + LOGO_URL + '" alt="EQX" width="' + LOGO_WIDTH + '" '
+        + 'style="display:block;width:' + LOGO_WIDTH + 'px;height:auto;border:0;">'
+        + '</td></tr>'
+
+        + '</tbody></table>'
+      );
+    }
+
+    /* ── Preview aktualisieren ────────────────────────────────────────── */
+    function update() {
+      var d = {
+        name:     fields.name.value     || "",
+        position: fields.position.value || "",
+        email:    fields.email.value    || "",
+        phone:    fields.phone.value    || "",
+        quote:    fields.quote.value    || "",
+        company:  fields.company.value  || "",
+        street:   fields.street.value   || "",
+        city:     fields.city.value     || "",
+      };
+      var html = buildSignature(d);
+      preview.innerHTML    = html;
+      copyTarget.innerHTML = html;
+    }
+
+    /* ── Kopieren ─────────────────────────────────────────────────────── */
+    function copy() {
+      try {
+        var range = document.createRange();
+        range.selectNode(copyTarget);
+        var sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand("copy");
+        sel.removeAllRanges();
+
+        copyBtn.classList.add("--copied");
+        feedback.classList.add("--visible");
+        setTimeout(function () {
+          copyBtn.classList.remove("--copied");
+          feedback.classList.remove("--visible");
+        }, 2500);
+      } catch (e) {
+        alert("Kopieren fehlgeschlagen — bitte manuell kopieren.");
+      }
+    }
+
+    /* ── Events ───────────────────────────────────────────────────────── */
+    document.getElementById("sig-form").addEventListener("input", update);
+    copyBtn.addEventListener("click", copy);
+
+    /* ── Init ─────────────────────────────────────────────────────────── */
+    update();
+
+  })();
+</script>
+
+</body>
+</html>
