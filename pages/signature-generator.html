@@ -85,6 +85,7 @@
       height: 4rem;
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: 0 2rem;
       position: sticky;
       top: 0;
@@ -284,7 +285,9 @@
 
 <!-- Nav -->
 <nav class="nav">
-  <img src="https://cdn.shopify.com/s/files/1/0795/9091/6441/files/EQX_Logo_green.png?v=1709463036" alt="EQX">
+  <a href="https://www.eqx.vet" target="_blank" rel="noopener">
+    <img src="https://cdn.shopify.com/s/files/1/0795/9091/6441/files/EQX_Logo_green.png?v=1709463036" alt="EQX">
+  </a>
 </nav>
 
 <!-- Page -->
@@ -319,7 +322,7 @@
           <input id="f-phone" type="tel" value="+49 831 123456" placeholder="+49 831 123456">
         </div>
         <div class="form-group">
-          <label for="f-quote">Zitat <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
+          <label for="f-quote">Persönliche Worte <span style="font-weight:400; color:var(--fg-muted)">(optional)</span></label>
           <input id="f-quote" type="text" value="Vertrauen ist das beste Bauchgefühl" placeholder="z. B. Where focus goes, energy flows">
         </div>
 
@@ -496,6 +499,12 @@
         + '</td></tr>'
         + '<tr><td ' + sp + '>'
         + '<font face="Arial" color="#666666">' + d.city + '</font>'
+        + '</td></tr>'
+
+        /* Website */
+        + '<tr><td ' + sp + '>'
+        + '<a href="https://www.eqx.vet" style="color:#006838;text-decoration:none;">'
+        + '<font face="Arial" color="#006838">www.eqx.vet</font></a>'
         + '</td></tr>'
 
         /* Logo */
