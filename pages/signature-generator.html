@@ -326,6 +326,10 @@
           <label for="f-quote">Persönliche Worte <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
           <input id="f-quote" type="text" value="Vertrauen ist das beste Bauchgefühl" placeholder="z. B. Where focus goes, energy flows">
         </div>
+        <div class="form-field">
+          <label for="f-photo">Foto-URL <span style="font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+          <input id="f-photo" type="url" value="" placeholder="https://…/mein-foto.jpg">
+        </div>
 
         <hr class="divider">
         <p class="section-heading">Unternehmen</p>
@@ -425,6 +429,7 @@
       email:    document.getElementById("f-email"),
       phone:    document.getElementById("f-phone"),
       quote:    document.getElementById("f-quote"),
+      photo:    document.getElementById("f-photo"),
       company:  document.getElementById("f-company"),
       street:   document.getElementById("f-street"),
       city:     document.getElementById("f-city"),
@@ -455,10 +460,8 @@
           + '</td></tr>'
         : "";
 
-      return (
-        '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:480px;background-color:#ffffff;">'
-        + '<tbody>'
-
+      /* ── Kontaktblock (wird in beiden Layouts verwendet) ── */
+      var contactBlock = ''
         /* Trennstrich */
         + '<tr><td ' + sp + '>'
         + '<font face="Arial" color="#006838" style="font-size:18px;">—</font>'
@@ -513,9 +516,35 @@
         + '<tr><td style="margin:0;padding:0;line-height:1;">'
         + '<img src="' + LOGO_URL + '" alt="EQX" width="' + LOGO_WIDTH + '" '
         + 'style="display:block;width:' + LOGO_WIDTH + 'px;height:auto;border:0;">'
-        + '</td></tr>'
+        + '</td></tr>';
 
-        + '</tbody></table>'
+      /* ── Mit Foto: 2-Spalten-Layout ── */
+      if (d.photo) {
+        return (
+          '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background-color:#ffffff;">'
+          + '<tbody><tr>'
+
+          /* Foto-Spalte */
+          + '<td style="padding:0;vertical-align:top;padding-right:16px;">'
+          + '<img src="' + d.photo + '" alt="' + d.name + '" width="80" '
+          + 'style="display:block;width:80px;height:80px;object-fit:cover;border:0;">'
+          + '</td>'
+
+          /* Kontakt-Spalte */
+          + '<td style="padding:0;vertical-align:top;">'
+          + '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;">'
+          + '<tbody>' + contactBlock + '</tbody>'
+          + '</table>'
+          + '</td>'
+
+          + '</tr></tbody></table>'
+        );
+      }
+
+      /* ── Ohne Foto: 1-Spalten-Layout ── */
+      return (
+        '<table cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;width:100%;max-width:480px;background-color:#ffffff;">'
+        + '<tbody>' + contactBlock + '</tbody></table>'
       );
     }
 
@@ -527,6 +556,7 @@
         email:    fields.email.value    || "",
         phone:    fields.phone.value    || "",
         quote:    fields.quote.value    || "",
+        photo:    fields.photo.value    || "",
         company:  fields.company.value  || "",
         street:   fields.street.value   || "",
         city:     fields.city.value     || "",
