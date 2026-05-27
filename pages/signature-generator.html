@@ -41,42 +41,6 @@
     img { display: block; max-width: 100%; }
     a { color: var(--green); }
 
-    /* ── Announcement Bar ────────────────────────────────────────────────── */
-    .bar {
-      background: var(--green-neon);
-      height: 2.5rem;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-    }
-    .bar__track {
-      display: flex;
-      white-space: nowrap;
-      animation: marquee 16s linear infinite;
-    }
-    .bar__item {
-      display: inline-flex;
-      align-items: center;
-      gap: 1.5rem;
-      font-size: 0.75rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: var(--fg);
-      padding: 0 2.5rem;
-    }
-    .bar__item::after {
-      content: "";
-      display: inline-block;
-      width: 3px; height: 3px;
-      background: var(--green);
-      border-radius: 50%;
-      margin-left: 1.5rem;
-    }
-    @keyframes marquee {
-      0%   { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
 
     /* ── Nav ─────────────────────────────────────────────────────────────── */
     .nav {
@@ -294,20 +258,6 @@
   </style>
 </head>
 <body>
-
-<!-- Announcement Bar -->
-<div class="bar">
-  <div class="bar__track">
-    <span class="bar__item">EQX</span>
-    <span class="bar__item">E-Mail-Signatur Generator</span>
-    <span class="bar__item">EQX</span>
-    <span class="bar__item">E-Mail-Signatur Generator</span>
-    <span class="bar__item">EQX</span>
-    <span class="bar__item">E-Mail-Signatur Generator</span>
-    <span class="bar__item">EQX</span>
-    <span class="bar__item">E-Mail-Signatur Generator</span>
-  </div>
-</div>
 
 <!-- Nav -->
 <nav class="nav">
