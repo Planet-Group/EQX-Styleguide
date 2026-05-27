@@ -224,6 +224,31 @@
     }
     .copy-feedback.--visible { opacity: 1; }
 
+    .btn-thunderbird {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      margin-top: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: transparent;
+      color: var(--green);
+      font-family: var(--font);
+      font-size: 0.875rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      border: 2px solid var(--green);
+      border-radius: 0;
+      cursor: pointer;
+      transition: background var(--dur), color var(--dur);
+    }
+    .btn-thunderbird:hover {
+      background: var(--green);
+      color: var(--fg-inverse);
+    }
+
     /* ── Instructions ────────────────────────────────────────────────────── */
     .instructions { margin-top: 2.5rem; }
     .instructions h2 {
@@ -366,9 +391,30 @@
       </button>
       <p class="copy-feedback" id="copy-feedback">Signatur kopiert!</p>
 
+      <button class="btn-thunderbird" id="thunderbird-btn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M8 1v9M8 10l-3-3M8 10l3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        Für Thunderbird herunterladen
+      </button>
+
       <!-- Anleitung -->
       <div class="instructions">
         <h2>Einrichtung</h2>
+
+        <div class="instr-group">
+          <h3>Thunderbird</h3>
+          <ol>
+            <li>Auf <strong>„Für Thunderbird herunterladen"</strong> klicken — es wird eine Datei <strong>eqx-signatur.html</strong> gespeichert.</li>
+            <li>Die Datei an einen festen Ort ablegen (z. B. <strong>Dokumente/EQX-Signatur/</strong>) — Thunderbird liest sie bei jedem Start neu ein, sie darf also nicht verschoben oder gelöscht werden.</li>
+            <li>Thunderbird öffnen → Menü <strong>„Extras" → „Konten-Einstellungen"</strong> (Windows/Linux) oder <strong>„Thunderbird" → „Einstellungen" → „Konten-Einstellungen"</strong> (macOS).</li>
+            <li>Dein E-Mail-Konto in der linken Spalte auswählen.</li>
+            <li>Haken bei <strong>„Eine Signatur-Datei anhängen (HTML, Text, Bild)"</strong> setzen.</li>
+            <li>Auf <strong>„Durchsuchen…"</strong> klicken und die gespeicherte <strong>eqx-signatur.html</strong> auswählen.</li>
+            <li><strong>„OK"</strong> klicken — fertig.</li>
+          </ol>
+        </div>
 
         <div class="instr-group">
           <h3>Gmail (Browser)</h3>
@@ -588,9 +634,26 @@
       }
     }
 
+    /* ── Thunderbird Download ─────────────────────────────────────────── */
+    function downloadForThunderbird() {
+      var html = '<!DOCTYPE html>\n<html>\n<head><meta charset="UTF-8"></head>\n<body>\n'
+        + copyTarget.innerHTML.trim()
+        + '\n</body>\n</html>';
+      var blob = new Blob([html], { type: "text/html;charset=utf-8" });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement("a");
+      a.href     = url;
+      a.download = "eqx-signatur.html";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
     /* ── Events ───────────────────────────────────────────────────────── */
     document.getElementById("sig-form").addEventListener("input", update);
     copyBtn.addEventListener("click", copy);
+    document.getElementById("thunderbird-btn").addEventListener("click", downloadForThunderbird);
 
     /* ── Init ─────────────────────────────────────────────────────────── */
     update();
